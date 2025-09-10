@@ -29,11 +29,7 @@
     "packages/*"
   ],
   "lint-staged": {
-    "**/*.{ts, tsx}": [
-      "eslint",
-      "prettier --write"
-    ],
-    "**/*.md": [
+    "**/*.{ts, tsx, md}": [
       "prettier --write"
     ]
   }
