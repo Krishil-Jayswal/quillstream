@@ -23,13 +23,12 @@ def process_video(video_id: str):
     print("1. ffmpeg pipeline completed successfully.")
 
     # Stage 2: frame reduction pipeline
-    reduced_frames = frame_reduction_pipeline(frames_dir)
-    print(reduced_frames)
+    selected_frames_file = frame_reduction_pipeline(frames_dir)
     print("2. frame reduction pipeline completed successfully.")
-
+    
     # Stage 3: whisper pipeline
     whisper_artifacts_dir = os.path.join(base_dir, "whisper")
-    whisper_pipeline(audio_chunks_dir, whisper_artifacts_dir)
+    transcript_file = whisper_pipeline(audio_chunks_dir, whisper_artifacts_dir)
     print("3. whisper pipeline completed successfully.")
 
 if __name__ == "__main__" :
