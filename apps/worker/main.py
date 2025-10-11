@@ -2,6 +2,7 @@ import os
 from config import settings
 from utils.azure_client import download_video
 from pipeline.ffmpeg import ffmpeg_pipeline
+from pipeline.frame import frame_reduction_pipeline
 
 def process_video(video_id: str):
     # Base directory of artifacts
@@ -21,6 +22,11 @@ def process_video(video_id: str):
     logs = ffmpeg_pipeline(video_dir, frames_dir, audio_dir, audio_chunks_dir)
     print(logs)
     print("1. ffmpeg pipeline completed successfully.")
+
+    # Stage 2: frame reduction pipeline
+    reduced_frames = frame_reduction_pipeline(frames_dir)
+    print(reduced_frames)
+    print("2. frame reduction pipeline completed successfully.")
 
 if __name__ == "__main__" :
     video_id = settings.VIDEO_ID
