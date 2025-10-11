@@ -1,8 +1,7 @@
 import os
 from config import settings
-from utils.azure_client import download_video
-from pipeline.ffmpeg import ffmpeg_pipeline
-from pipeline.frame import frame_reduction_pipeline
+from utils import download_video
+from pipeline import ffmpeg_pipeline, frame_reduction_pipeline, whisper_pipeline
 
 def process_video(video_id: str):
     # Base directory of artifacts
@@ -27,6 +26,11 @@ def process_video(video_id: str):
     reduced_frames = frame_reduction_pipeline(frames_dir)
     print(reduced_frames)
     print("2. frame reduction pipeline completed successfully.")
+
+    # Stage 3: whisper pipeline
+    whisper_artifacts_dir = os.path.join(base_dir, "whisper")
+    whisper_pipeline(audio_chunks_dir, whisper_artifacts_dir)
+    print("3. whisper pipeline completed successfully.")
 
 if __name__ == "__main__" :
     video_id = settings.VIDEO_ID
