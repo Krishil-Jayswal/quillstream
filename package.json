@@ -8,8 +8,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "prepare": "husky",
-    "pre-commit": "lint-staged"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -29,12 +28,7 @@
     "packages/*"
   ],
   "lint-staged": {
-    "**/*.{ts, tsx}": [
-      "eslint",
-      "prettier --write"
-    ],
-    "**/*.md": [
-      "prettier --write"
-    ]
+    "apps/*.{ts, tsx}": ["eslint"],
+    "*.{ts, tsx, md}": ["prettier --write"]
   }
 }
