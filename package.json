@@ -29,6 +29,7 @@
   ],
   "lint-staged": {
     "apps/*.{ts, tsx}": ["eslint"],
-    "*.{ts, tsx, md}": ["prettier --write"]
+    "*.{ts, tsx, md}": ["prettier --write"],
+    "*.py": ["black"]
   }
 }
