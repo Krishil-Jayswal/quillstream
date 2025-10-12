@@ -85,11 +85,6 @@ def frame_reduction_pipeline(frames_dir: str) -> str:
             prev = embs[-1]
             pbar.update(len(batch_frames))
 
-            kept = len(selected_frames)
-            console.print(
-                f"[cyan]Batch {i//BATCH_SIZE+1}/{total_batches}[/cyan] -> [green]{kept}[/green] frames selected so far"
-            )
-
     selected_frames.append(frames[-1])
     selected_frames_path = os.path.join(frames_dir, "selected_frames.json")
     with open(selected_frames_path, "w", encoding="utf-8") as f:

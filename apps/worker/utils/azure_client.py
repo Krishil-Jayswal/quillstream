@@ -5,6 +5,7 @@ service_client = BlobServiceClient.from_connection_string(settings.ABS_CONNECTIO
 
 container_client = service_client.get_container_client(settings.ABS_CONTAINER_NAME)
 
+
 def download_video(blob_id: str, file_path: str):
     blob = container_client.get_blob_client(blob_id)
     f = open(file_path, "wb")

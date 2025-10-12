@@ -1,7 +1,13 @@
 import os
 from config import settings
 from utils import download_video
-from pipeline import ffmpeg_pipeline, frame_reduction_pipeline, whisper_pipeline
+from pipeline import (
+    ffmpeg_pipeline,
+    frame_reduction_pipeline,
+    whisper_pipeline,
+    llama_scout_pipeline,
+)
+
 
 def process_video(video_id: str):
     # Base directory of artifacts
@@ -25,12 +31,19 @@ def process_video(video_id: str):
     # Stage 2: frame reduction pipeline
     selected_frames_file = frame_reduction_pipeline(frames_dir)
     print("2. frame reduction pipeline completed successfully.")
-    
+
     # Stage 3: whisper pipeline
     whisper_artifacts_dir = os.path.join(base_dir, "whisper")
     transcript_file = whisper_pipeline(audio_chunks_dir, whisper_artifacts_dir)
     print("3. whisper pipeline completed successfully.")
 
-if __name__ == "__main__" :
+    # Stage 4: llama scout pipeline
+    llama_scout_artifacts_dir = llama_scout_pipeline(
+        base_dir, frames_dir, selected_frames_file
+    )
+    print("4. llama scout pipeline completed successfully.")
+
+
+if __name__ == "__main__":
     video_id = settings.VIDEO_ID
     process_video(video_id)
