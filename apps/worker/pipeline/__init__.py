@@ -1,11 +1,11 @@
 from .ffmpeg import ffmpeg_pipeline
-from .frame import frame_reduction_pipeline
-from .whisper import whisper_pipeline
-from .llama_scout import llama_scout_pipeline
+from .frame_reduction import frame_reduction_pipeline
+from .audio_transcription import audio_transcription_pipeline
+from .ocr import ocr_pipeline
 
 __all__ = [
     "ffmpeg_pipeline",
     "frame_reduction_pipeline",
-    "whisper_pipeline",
-    "llama_scout_pipeline",
+    "audio_transcription_pipeline",
+    "ocr_pipeline",
 ]

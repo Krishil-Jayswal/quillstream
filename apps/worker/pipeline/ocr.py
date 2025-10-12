@@ -14,12 +14,10 @@ from concurrent.futures import ThreadPoolExecutor
 console = Console()
 
 
-def llama_scout_pipeline(
-    base_dir: str, frames_dir: str, selected_frames_file: str
-) -> str:
+def ocr_pipeline(base_dir: str, frames_dir: str, selected_frames_file: str) -> str:
     BATCH_SIZE = 2
 
-    llama_scout_artifacts_dir = os.path.join(base_dir, "llama_scout")
+    llama_scout_artifacts_dir = os.path.join(base_dir, "ocr")
     os.makedirs(llama_scout_artifacts_dir, exist_ok=True)
 
     with open(selected_frames_file, encoding="utf-8") as f:

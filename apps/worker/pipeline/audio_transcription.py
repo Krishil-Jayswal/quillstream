@@ -10,7 +10,9 @@ from schema import Transcript, Segment
 console = Console()
 
 
-def whisper_pipeline(audio_chunks_dir: str, whisper_artifacts_dir: str) -> str:
+def audio_transcription_pipeline(
+    audio_chunks_dir: str, whisper_artifacts_dir: str
+) -> str:
     os.makedirs(whisper_artifacts_dir, exist_ok=True)
     chunks = natsorted(os.listdir(audio_chunks_dir))
     transcriptions = []
