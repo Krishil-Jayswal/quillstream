@@ -7,7 +7,7 @@ from tqdm import tqdm
 from utils import groq
 from rich.table import Table
 from rich.console import Console
-from schema import SelectedFrames
+from schemas import SelectedFrames
 from prompts import ocr_system_prompt
 from concurrent.futures import ThreadPoolExecutor
 
@@ -17,8 +17,8 @@ console = Console()
 def ocr_pipeline(base_dir: str, frames_dir: str, selected_frames_file: str) -> str:
     BATCH_SIZE = 2
 
-    llama_scout_artifacts_dir = os.path.join(base_dir, "ocr")
-    os.makedirs(llama_scout_artifacts_dir, exist_ok=True)
+    ocr_artifacts_dir = os.path.join(base_dir, "ocr")
+    os.makedirs(ocr_artifacts_dir, exist_ok=True)
 
     with open(selected_frames_file, encoding="utf-8") as f:
         selected_frames = SelectedFrames(**json.load(f))
@@ -29,7 +29,7 @@ def ocr_pipeline(base_dir: str, frames_dir: str, selected_frames_file: str) -> s
             return base64.b64encode(f.read()).decode("utf-8")
 
     def save_ocr_output(frame_name: str, text: str):
-        path = os.path.join(llama_scout_artifacts_dir, f"{frame_name.split(".")[0]}.md")
+        path = os.path.join(ocr_artifacts_dir, f"{frame_name.split(".")[0]}.md")
         with open(path, "w", encoding="utf-8") as f:
             f.write(text)
 
@@ -70,7 +70,9 @@ def ocr_pipeline(base_dir: str, frames_dir: str, selected_frames_file: str) -> s
                 ],
             )
 
-            texts = re.split(r"### Image", (response.choices[0].message.content or ""))
+            texts = re.split(
+                r"### Image \d", (response.choices[0].message.content or "")
+            )
             texts = [text.strip() for text in texts if text.strip() != ""]
 
             with ThreadPoolExecutor(max_workers=BATCH_SIZE) as executor:
@@ -85,9 +87,9 @@ def ocr_pipeline(base_dir: str, frames_dir: str, selected_frames_file: str) -> s
     table.add_column("Value", justify="right")
 
     table.add_row("Total Frames", str(len(selected_frames.frames)))
-    table.add_row("OCR Artifacts Dir", llama_scout_artifacts_dir)
+    table.add_row("OCR Artifacts Dir", ocr_artifacts_dir)
 
     console.print(table)
-    console.rule("[bold green] OCR Pipeline Completed\n")
+    console.rule("[bold green] OCR Pipeline Completed\n\n")
 
-    return llama_scout_artifacts_dir
+    return ocr_artifacts_dir

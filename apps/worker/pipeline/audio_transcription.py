@@ -5,7 +5,7 @@ from utils import groq
 from rich.table import Table
 from natsort import natsorted
 from rich.console import Console
-from schema import Transcript, Segment
+from schemas import Transcript, Segment
 
 console = Console()
 
@@ -38,8 +38,8 @@ def audio_transcription_pipeline(
         segments=[
             Segment(
                 text=segment["text"],
-                start=segment["start"] + i * 600,
-                end=segment["end"] + i * 600,
+                start=int(segment["start"] + i * 600),
+                end=int(segment["end"] + i * 600),
             )
             for i, transcription in enumerate(transcriptions)
             for segment in transcription["segments"]
@@ -59,6 +59,6 @@ def audio_transcription_pipeline(
     table.add_row("Transcript File", transcript_path)
 
     console.print(table)
-    console.rule("[bold green] Transcription Pipeline Completed\n")
+    console.rule("[bold green] Transcription Pipeline Completed\n\n")
 
     return transcript_path

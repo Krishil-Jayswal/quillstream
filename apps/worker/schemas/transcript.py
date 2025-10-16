@@ -4,8 +4,8 @@ from typing import List
 
 class Segment(BaseModel):
     text: str
-    start: float
-    end: float
+    start: int
+    end: int
 
 
 class Transcript(BaseModel):

@@ -8,7 +8,7 @@ from typing import List, cast
 from rich.table import Table
 from natsort import natsorted
 from rich.console import Console
-from schema import SelectedFrames
+from schemas import SelectedFrames
 import torchvision.transforms as T
 from concurrent.futures import ThreadPoolExecutor
 from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
@@ -101,6 +101,6 @@ def frame_reduction_pipeline(frames_dir: str) -> str:
     table.add_row("Selected Frames File", selected_frames_path)
 
     console.print(table)
-    console.rule("[bold green] Frame Reduction Pipeline Completed\n")
+    console.rule("[bold green] Frame Reduction Pipeline Completed\n\n")
 
     return selected_frames_path

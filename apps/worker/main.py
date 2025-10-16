@@ -6,6 +6,7 @@ from pipeline import (
     frame_reduction_pipeline,
     audio_transcription_pipeline,
     ocr_pipeline,
+    notes_generation_pipeline,
 )
 
 
@@ -37,8 +38,13 @@ def process_video(video_id: str):
         audio_chunks_dir, audio_transcription_artifacts_dir
     )
 
-    # Stage 4: llama scout pipeline
+    # Stage 4: ocr pipeline
     ocr_artifacts_dir = ocr_pipeline(base_dir, frames_dir, selected_frames_file)
+
+    # Stage 5: notes generation pipeline
+    notes_artifacts_dir = notes_generation_pipeline(
+        base_dir, transcript_file, ocr_artifacts_dir
+    )
 
 
 if __name__ == "__main__":

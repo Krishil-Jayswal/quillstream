@@ -1,7 +1,7 @@
 ocr_system_prompt = """"You are an OCR Agent.
 Your task is to analyze the given image.
 Extract all the readable text from it.
-Organize the text in the order it was originally in the image.
+Organize it in a good summarized way.
 
 Return the response in markdown format.
 ### Image
