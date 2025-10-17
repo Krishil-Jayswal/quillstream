@@ -1,0 +1,22 @@
+{
+  "name": "@quillstream/store",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./client": "./src/client.ts",
+    "./edge": "./src/edge.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@quillstream/typescript-config": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "prisma": "^6.17.1"
+  }
+}

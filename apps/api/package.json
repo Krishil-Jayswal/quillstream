@@ -7,10 +7,12 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
+    "@hono/oauth-providers": "^0.8.5",
     "hono": "^4.10.0"
   },
   "devDependencies": {
     "wrangler": "^4.4.0",
-    "@repo/eslint-config": "workspace:*"
+    "@quillstream/eslint-config": "workspace:*",
+    "@quillstream/store": "workspace:*"
   }
 }

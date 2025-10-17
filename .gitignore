@@ -22,6 +22,7 @@ dist
 __pycache__
 artifacts
 .wrangler
+generated
 
 # Misc
 .DS_Store
