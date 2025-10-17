@@ -35,6 +35,9 @@ authRouter.get(
           profilePicture: userData.picture!,
         },
         update: {},
+        select: {
+          id: true,
+        },
       });
 
       const token = await sign(

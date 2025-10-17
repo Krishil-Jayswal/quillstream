@@ -7,6 +7,8 @@ export type Bindings = {
   DATABASE_URL: string;
   JWT_SECRET: string;
   CLIENT_URL: string;
+  ABS_CONNECTION_URL: string;
+  ABS_CONTAINER_NAME: string;
 };
 
 export type Variables = {

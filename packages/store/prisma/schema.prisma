@@ -40,7 +40,6 @@ model Video {
   id     String @id @default(uuid())
   title  String
   name   String
-  url    String
 
   notes  String?
   status Status
