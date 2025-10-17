@@ -24,6 +24,7 @@ model User {
   name           String
   email          String
   profilePicture String
+
   oAuthType      OAuthType
   oAuthId        String
 
@@ -40,8 +41,10 @@ model Video {
   title  String
   name   String
   url    String
+
   notes  String?
   status Status
+  
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

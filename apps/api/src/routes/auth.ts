@@ -4,11 +4,11 @@ import { prismaMiddleware } from "../middlewares/prisma";
 import { AppContext } from "../types/generics";
 import { sign } from "hono/utils/jwt/jwt";
 
-const auth = new Hono<AppContext>();
+const authRouter = new Hono<AppContext>();
 
-auth.use("*", prismaMiddleware);
+authRouter.use("*", prismaMiddleware);
 
-auth.get(
+authRouter.get(
   "/google",
   (c, next) => {
     return googleAuth({
@@ -50,4 +50,4 @@ auth.get(
   },
 );
 
-export default auth;
+export default authRouter;
