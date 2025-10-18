@@ -1,6 +1,5 @@
 export const generateBlobSasUrl = async (
-  accountName: string,
-  accountKey: string,
+  connectionString: string,
   containerName: string,
   blobName: string,
   expiryMinutes: number = 10,
@@ -13,6 +12,8 @@ export const generateBlobSasUrl = async (
     new Date(new Date().getTime() + expiryMinutes * 60 * 1000)
       .toISOString()
       .slice(0, -5) + "Z";
+  const accountName = connectionString.match(/AccountName=([^;]+)/)?.[1] || "";
+  const accountKey = connectionString.match(/AccountKey=([^;]+)/)?.[1] || "";
   const signedResource = "b";
   const signedVersion = "2021-06-08";
 

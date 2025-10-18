@@ -5,10 +5,52 @@ import { authMiddleware } from "../middlewares/auth";
 import { zValidator } from "@hono/zod-validator";
 import { PreSignedURL, PreSignedUrlSchema } from "@quillstream/validation";
 import { generateBlobSasUrl } from "../utils/blob";
+import { createRedisClient } from "@quillstream/redis/edge";
+import { STREAM } from "@quillstream/redis/meta";
 
 const uploadRouter = new Hono<AppContext>();
 
 uploadRouter.use("*", prismaMiddleware);
+
+uploadRouter.post("/completed", async (c) => {
+  const webhookhookSecret = c.req.header("x-qs-wh-secret");
+
+  if (!webhookhookSecret || c.env.WEBHOOK_SECRET !== webhookhookSecret) {
+    return c.json({ error: "Unauthenticated" }, 401);
+  }
+
+  const events = await c.req.json();
+
+  for (const event of events) {
+    if (event.eventType === "Microsoft.EventGrid.SubscriptionValidationEvent") {
+      return c.json({ validationResponse: event.data.validationCode });
+    }
+
+    if (event.eventType === "Microsoft.Storage.BlobCreated") {
+      const videoId = event.data.url.split("/").at(-2);
+      const video = await c.get("prisma").video.update({
+        where: {
+          id: videoId,
+        },
+        data: {
+          status: "PROCESSING",
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      });
+      const redis = createRedisClient(
+        c.env.UPSTASH_REDIS_REST_URL,
+        c.env.UPSTASH_REDIS_REST_TOKEN,
+      );
+      await redis.xadd(STREAM, "*", video);
+    }
+  }
+
+  return c.json({ success: true }, 200);
+});
+
 uploadRouter.use("*", authMiddleware);
 
 uploadRouter.post(
@@ -34,17 +76,11 @@ uploadRouter.post(
         },
       });
 
-      const connectionString = c.env.ABS_CONNECTION_URL;
-      const accountName =
-        connectionString.match(/AccountName=([^;]+)/)?.[1] || "";
-      const accountKey =
-        connectionString.match(/AccountKey=([^;]+)/)?.[1] || "";
-
       const blobSasUrl = await generateBlobSasUrl(
-        accountName,
-        accountKey,
+        c.env.ABS_CONNECTION_URL,
         c.env.ABS_CONTAINER_NAME,
         `${video.id}/${name}`,
+        2,
       );
 
       return c.json({
