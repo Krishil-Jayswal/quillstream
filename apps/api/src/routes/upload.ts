@@ -3,10 +3,9 @@ import { AppContext } from "../types/generics";
 import { prismaMiddleware } from "../middlewares/prisma";
 import { authMiddleware } from "../middlewares/auth";
 import { zValidator } from "@hono/zod-validator";
-import { PreSignedURL, PreSignedUrlSchema } from "@quillstream/validation";
+import { PreSignedUrlSchema } from "@quillstream/validation";
 import { generateBlobSasUrl } from "../utils/blob";
-import { createRedisClient } from "@quillstream/redis/edge";
-import { STREAM } from "@quillstream/redis/meta";
+import { xAdd } from "@quillstream/redis/edge";
 
 const uploadRouter = new Hono<AppContext>();
 
@@ -40,11 +39,11 @@ uploadRouter.post("/completed", async (c) => {
           name: true,
         },
       });
-      const redis = createRedisClient(
+      await xAdd(
         c.env.UPSTASH_REDIS_REST_URL,
         c.env.UPSTASH_REDIS_REST_TOKEN,
+        video,
       );
-      await redis.xadd(STREAM, "*", video);
     }
   }
 
@@ -58,7 +57,7 @@ uploadRouter.post(
   zValidator("json", PreSignedUrlSchema),
   async (c) => {
     try {
-      const { filename }: PreSignedURL = c.req.valid("json");
+      const { filename } = c.req.valid("json");
       const parts = filename.split(".");
       const extension = parts.pop() || "mp4";
       const title = parts.join(".");
