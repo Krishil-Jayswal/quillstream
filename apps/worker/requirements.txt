@@ -1,0 +1,11 @@
+azure-storage-blob
+groq
+natsort
+ollama
+Pillow
+pydantic
+pydantic_settings
+rich
+torch
+torchvision
+tqdm
