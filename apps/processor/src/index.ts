@@ -1,4 +1,5 @@
 import { xAckDel, xReadGroup } from "@quillstream/redis/client";
+import { processVideo } from "./job.js";
 
 const startProcessor = async () => {
   const MIN_IDLE_BACKOFF_MS = 5000;
@@ -18,13 +19,16 @@ const startProcessor = async () => {
       continue;
     }
 
-    const eventId: string[] = [];
-    for (const entry of entries) {
-      console.log(entry.video);
-      eventId.push(entry.eventId);
-    }
+    const eventIds: string[] = [];
 
-    await xAckDel(eventId);
+    const Jobs = entries.map(({ eventId, video: { id, name } }) => {
+      eventIds.push(eventId);
+      return processVideo(id, name);
+    });
+
+    await Promise.all(Jobs);
+
+    await xAckDel(eventIds);
     currentBackoff = MIN_IDLE_BACKOFF_MS;
   }
 };
