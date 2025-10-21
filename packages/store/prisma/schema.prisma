@@ -15,8 +15,8 @@ enum OAuthType {
 enum Status {
   UPLOADING
   PROCESSING
-  SUCCESS
-  FAILURE
+  COMPLETED
+  FAILED
 }
 
 model User {
@@ -39,9 +39,8 @@ model User {
 model Video {
   id     String @id @default(uuid())
   title  String
+  
   name   String
-
-  notes  String?
   status Status
   
   userId String

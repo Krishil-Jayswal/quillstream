@@ -74,9 +74,9 @@ uploadRouter.post(
   async (c) => {
     try {
       const { filename } = c.req.valid("json");
-      const parts = filename.split(".");
+      const parts = filename.split(".").map((part) => part.trim());
       const extension = parts.pop() || "mp4";
-      const title = parts.join(".");
+      const title = parts.join(".").trim();
       const name = `video.${extension}`;
 
       const video = await c.get("prisma").video.create({
