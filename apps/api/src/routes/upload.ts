@@ -52,6 +52,22 @@ uploadRouter.post("/completed", async (c) => {
 
 uploadRouter.use("*", authMiddleware);
 
+uploadRouter.get("/", async (c) => {
+  const videos = await c.get("prisma").video.findMany({
+    where: {
+      userId: c.get("userId"),
+    },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      createdAt: true,
+    },
+  });
+
+  return c.json({ videos });
+});
+
 uploadRouter.post(
   "/pre-signed-url",
   zValidator("json", PreSignedUrlSchema),
