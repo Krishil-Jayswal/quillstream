@@ -59,7 +59,7 @@ def process_video(video_name: str, video_id: str):
         )
 
     except Exception as e:
-        redis.log("video processing failed", "Error", "FAILED")
+        redis.log(f"video processing failed: {e}", "Error", "FAILED")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import os
 import mimetypes
+from tqdm import tqdm
 from pathlib import Path
 from config import settings
 from concurrent.futures import ThreadPoolExecutor
@@ -12,10 +13,23 @@ container_client = service_client.get_container_client(settings.ABS_CONTAINER_NA
 
 def download(blob_id: str, file_path: str):
     blob = container_client.get_blob_client(blob_id)
-    f = open(file_path, "wb")
-    blob_data = blob.download_blob()
-    blob_data.readinto(f)
-    f.close()
+    blob_props = blob.get_blob_properties()
+    total = blob_props.size
+
+    with open(file_path, "wb") as f:
+        with tqdm(
+            total=total,
+            desc=f"Downloading {blob_id}",
+            unit="B",
+            unit_scale=True,
+            unit_divisor=1024,
+            colour="green",
+            ncols=100,
+        ) as pbar:
+            stream = blob.download_blob()
+            for chunk in stream.chunks():
+                bytes_written = f.write(chunk)
+                pbar.update(bytes_written)
 
 
 def upload(blob_id: str, file_path: str):
