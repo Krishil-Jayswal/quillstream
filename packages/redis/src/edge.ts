@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis/cloudflare";
-import { STREAM } from "./meta.js";
+import { VIDEOS_STREAM } from "./meta.js";
 
 export const xAdd = async (
   url: string,
@@ -9,5 +9,5 @@ export const xAdd = async (
   await new Redis({
     url,
     token,
-  }).xadd(STREAM, "*", data);
+  }).xadd(VIDEOS_STREAM, "*", data);
 };

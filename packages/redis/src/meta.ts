@@ -1,19 +1,37 @@
-export const STREAM = "quillstream:videos";
+const quillstream = "quillstream";
+export const VIDEOS_STREAM = `${quillstream}:videos`;
+export const JOBS_STREAM = `${quillstream}:jobs`;
+export const PROCESSOR_CONSUMER_GROUP = `${VIDEOS_STREAM}:processor`;
+export const PUSHER_CONSUMER_GROUP = `${JOBS_STREAM}:pusher`;
 
-export const CONSUMER_GROUP = "quillstream:processor";
+export const ConsumerGroup = {
+  [VIDEOS_STREAM]: PROCESSOR_CONSUMER_GROUP,
+  [JOBS_STREAM]: PUSHER_CONSUMER_GROUP,
+};
 
-export const CONSUMER =
-  "quillstream:processor-" + Math.random().toString(36).slice(2, 6);
+export type Stream = typeof VIDEOS_STREAM | typeof JOBS_STREAM;
 
-export type Response = [
+export type Res = [
   stream: string,
-  [eventId: string, [id: string, value: string, name: string, Value: string]][],
+  [
+    eventId: string,
+    [field: string, value: string, field: string, Value: string],
+  ][],
 ][];
 
-export type XReadGroupResponse = {
+export type XReadGroupVideoResponse = {
   eventId: string;
-  video: {
-    id: string;
-    name: string;
-  };
+  video: { id: string; name: string };
 };
+
+export type XReadGroupJobResponse = {
+  eventId: string;
+  job: { id: string; status: "COMPLETED" | "FAILED" };
+};
+
+export type StreamResponseMap = {
+  [VIDEOS_STREAM]: XReadGroupVideoResponse[];
+  [JOBS_STREAM]: XReadGroupJobResponse[];
+};
+
+export type StreamResponse<T extends Stream> = StreamResponseMap[T];

@@ -1,13 +1,14 @@
-import { xAckDel, xReadGroup } from "@quillstream/redis/client";
+import { RedisClient } from "@quillstream/redis/client";
 import { processVideo } from "./job.js";
 
 const startProcessor = async () => {
   const MIN_IDLE_BACKOFF_MS = 5000;
   const MAX_IDLE_BACKOFF_MS = 30000;
   let currentBackoff = MIN_IDLE_BACKOFF_MS;
+  const redis = new RedisClient("quillstream:videos");
 
   while (true) {
-    const entries = await xReadGroup();
+    const entries = await redis.xReadGroup();
 
     if (!entries) {
       await new Promise((r) => setTimeout(r, currentBackoff));
@@ -28,7 +29,7 @@ const startProcessor = async () => {
 
     await Promise.all(Jobs);
 
-    await xAckDel(eventIds);
+    await redis.xAckDel(eventIds);
     currentBackoff = MIN_IDLE_BACKOFF_MS;
   }
 };
