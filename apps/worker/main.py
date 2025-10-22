@@ -1,6 +1,6 @@
 import os
 from config import settings
-from utils import download, upload, upload_artifacts, RedisClient
+from utils import AzureClient, RedisClient
 from pipeline import (
     ffmpeg_pipeline,
     frame_reduction_pipeline,
@@ -12,6 +12,7 @@ from pipeline import (
 
 def process_video(video_name: str, video_id: str):
     redis = RedisClient(video_id)
+    azure = AzureClient()
 
     try:
         # Base directory of artifacts
@@ -20,7 +21,7 @@ def process_video(video_name: str, video_id: str):
 
         # Stage 0: Download the video
         video_dir = os.path.join(base_dir, video_name)
-        download(os.path.join(video_id, video_name), video_dir)
+        azure.download(os.path.join(video_id, video_name), video_dir)
         redis.log("Video downloaded successfully.", "Info")
 
         # Stage 1: ffmpeg pipeline
@@ -33,7 +34,7 @@ def process_video(video_name: str, video_id: str):
         # Stage 2: frame reduction pipeline
         selected_frames_file = frame_reduction_pipeline(frames_dir)
         print(selected_frames_file)
-        upload(os.path.join(video_id, selected_frames_file), selected_frames_file)
+        azure.upload(os.path.join(video_id, selected_frames_file), selected_frames_file)
         redis.log("frame reduction pipeline completed successfully.", "Info")
 
         # Stage 3: audio transcription pipeline
@@ -41,19 +42,19 @@ def process_video(video_name: str, video_id: str):
         transcript_file = audio_transcription_pipeline(
             audio_chunks_dir, audio_transcription_artifacts_dir
         )
-        upload(os.path.join(video_id, transcript_file), transcript_file)
+        azure.upload(os.path.join(video_id, transcript_file), transcript_file)
         redis.log("audio transcription pipeline completed successfully.", "Info")
 
         # Stage 4: ocr pipeline
         ocr_artifacts_dir = ocr_pipeline(base_dir, frames_dir, selected_frames_file)
-        upload_artifacts(ocr_artifacts_dir)
+        azure.upload_artifacts(ocr_artifacts_dir)
         redis.log("ocr pipeline completed successfully.", "Info")
 
         # Stage 5: notes generation pipeline
         notes_artifacts_dir = notes_generation_pipeline(
             base_dir, transcript_file, ocr_artifacts_dir
         )
-        upload_artifacts(notes_artifacts_dir)
+        azure.upload_artifacts(notes_artifacts_dir)
         redis.log(
             "notes generation pipeline completed successfully.", "Info", "Completed"
         )
