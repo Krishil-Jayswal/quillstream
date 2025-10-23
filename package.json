@@ -9,7 +9,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "prepare": "husky",
-    "db:generate": "cd packages/store && prisma generate"
+    "db:generate": "prisma generate --schema=packages/store/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=packages/store/prisma/schema.prisma"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

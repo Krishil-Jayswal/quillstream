@@ -1,22 +1,16 @@
 import { RedisClient } from "@quillstream/redis/client";
+import { ExponentialBackoff } from "@quillstream/redis/backoff";
 import { processVideo } from "./job.js";
 
 const startProcessor = async () => {
-  const MIN_IDLE_BACKOFF_MS = 5000;
-  const MAX_IDLE_BACKOFF_MS = 30000;
-  let currentBackoff = MIN_IDLE_BACKOFF_MS;
   const redis = new RedisClient("quillstream:videos");
+  const backoff = new ExponentialBackoff();
 
   while (true) {
     const entries = await redis.xReadGroup();
 
     if (!entries) {
-      await new Promise((r) => setTimeout(r, currentBackoff));
-      if (currentBackoff === MAX_IDLE_BACKOFF_MS) {
-        currentBackoff = MIN_IDLE_BACKOFF_MS;
-      } else {
-        currentBackoff = Math.min(currentBackoff * 1.5, MAX_IDLE_BACKOFF_MS);
-      }
+      backoff.wait();
       continue;
     }
 
@@ -30,7 +24,7 @@ const startProcessor = async () => {
     await Promise.all(Jobs);
 
     await redis.xAckDel(eventIds);
-    currentBackoff = MIN_IDLE_BACKOFF_MS;
+    backoff.reset();
   }
 };
 

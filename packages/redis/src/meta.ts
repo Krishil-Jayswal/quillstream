@@ -1,4 +1,4 @@
-const quillstream = "quillstream";
+export const quillstream = "quillstream";
 export const VIDEOS_STREAM = `${quillstream}:videos`;
 export const JOBS_STREAM = `${quillstream}:jobs`;
 export const PROCESSOR_CONSUMER_GROUP = `${VIDEOS_STREAM}:processor`;

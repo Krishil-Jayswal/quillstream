@@ -29,6 +29,7 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@quillstream/eslint-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19.1.1",

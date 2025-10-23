@@ -1,21 +1,18 @@
 {
-  "name": "@quillstream/redis",
+  "name": "@quillstream/pusher",
   "module": "index.ts",
   "type": "module",
-  "exports": {
-    "./client": "./src/client.ts",
-    "./edge": "./src/edge.ts",
-    "./backoff": "./src/backoff.ts"
-  },
   "private": true,
+  "dependencies": {
+    "@quillstream/redis": "workspace:*",
+    "@quillstream/store": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "latest",
+    "@quillstream/eslint-config": "workspace:*",
     "@quillstream/typescript-config": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "dependencies": {
-    "@upstash/redis": "^1.35.6"
   }
 }

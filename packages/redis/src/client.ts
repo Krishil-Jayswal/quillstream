@@ -9,7 +9,7 @@ import {
 } from "./meta.js";
 
 export class RedisClient<T extends Stream> {
-  private client: Redis;
+  public client: Redis;
   private stream: T;
   private consumer: string;
   private consumerGroup: string;
