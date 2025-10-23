@@ -10,7 +10,7 @@ const startProcessor = async () => {
     const entries = await redis.xReadGroup();
 
     if (!entries) {
-      backoff.wait();
+      await backoff.wait();
       continue;
     }
 
