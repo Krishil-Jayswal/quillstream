@@ -3,9 +3,9 @@ import { AppContext } from "../types/generics";
 import { prismaMiddleware } from "../middlewares/prisma";
 import { authMiddleware } from "../middlewares/auth";
 import { zValidator } from "@hono/zod-validator";
-import { PreSignedUrlSchema } from "@quillstream/validation";
 import { generateBlobSasUrl } from "../utils/blob";
 import { xAdd } from "@quillstream/redis/edge";
+import { PreSignedUrlSchema } from "../utils/validation";
 
 const uploadRouter = new Hono<AppContext>();
 
@@ -77,7 +77,7 @@ uploadRouter.post(
       const parts = filename.split(".").map((part) => part.trim());
       const extension = parts.pop() || "mp4";
       const title = parts.join(".").trim();
-      const name = `video.${extension}`;
+      const name = `video.${extension}`.toLowerCase();
 
       const video = await c.get("prisma").video.create({
         data: {
