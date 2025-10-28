@@ -9,3 +9,4 @@ rich
 torch
 torchvision
 tqdm
+upstash-redis

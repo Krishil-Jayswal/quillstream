@@ -1,6 +1,6 @@
 import {
   BatchV1Api,
-  BatchV1ApiCreateNamespacedJobRequest,
+  type BatchV1ApiCreateNamespacedJobRequest,
   KubeConfig,
 } from "@kubernetes/client-node";
 
@@ -25,7 +25,7 @@ export const processVideo = async (id: string, name: string) => {
         backoffLimit: 1,
         template: {
           spec: {
-            restartPolicy: "never",
+            restartPolicy: "Never",
             volumes: [
               { name: "secret", emptyDir: {} },
               {
@@ -55,12 +55,10 @@ export const processVideo = async (id: string, name: string) => {
                   {
                     name: "worker-secret",
                     mountPath: "/secrets/worker-env",
-                    readOnly: true,
                   },
                   {
                     name: "shared-secret",
                     mountPath: "/secrets/shared-env",
-                    readOnly: true,
                   },
                   { name: "secret", mountPath: "/merged-env" },
                 ],
@@ -69,7 +67,8 @@ export const processVideo = async (id: string, name: string) => {
             containers: [
               {
                 name: "quillstream-worker",
-                image: "jkrishil/quillstream-worker:test",
+                image: "jkrishil/quillstream-worker:latest",
+                imagePullPolicy: "IfNotPresent",
                 env: [
                   { name: "VIDEO_ID", value: id },
                   { name: "VIDEO_NAME", value: name },
