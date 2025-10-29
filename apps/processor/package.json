@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "node ./src/index.ts",
-    "start": "bun run ./src/index.ts"
+    "build": "bun build ./src/index.ts --outdir dist --target bun",
+    "start": "bun run ./dist/index.js"
   },
   "dependencies": {
     "@kubernetes/client-node": "^1.4.0",
