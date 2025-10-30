@@ -9,12 +9,18 @@ from azure.storage.blob import BlobServiceClient, ContentSettings
 
 class AzureClient:
     def __init__(self):
-        self.container_client = BlobServiceClient.from_connection_string(
+        service_client = BlobServiceClient.from_connection_string(
             settings.ABS_CONNECTION_URL
-        ).get_container_client(settings.ABS_CONTAINER_NAME)
+        )
+        self.container_client = service_client.get_container_client(
+            settings.ABS_CONTAINER_NAME
+        )
+        self.upload_container_client = service_client.get_container_client(
+            settings.ABS_UPLOAD_CONTAINER_NAME
+        )
 
     def download(self, blob_id: str, file_path: str):
-        blob = self.container_client.get_blob_client(blob_id)
+        blob = self.upload_container_client.get_blob_client(blob_id)
         blob_props = blob.get_blob_properties()
         total = blob_props.size
 

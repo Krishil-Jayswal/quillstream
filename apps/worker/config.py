@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     ABS_CONNECTION_URL: str = "azure storage connection url"
-    ABS_CONTAINER_NAME: str = "azure storage connection name"
+    ABS_CONTAINER_NAME: str = "azure storage connectainer name"
+    ABS_UPLOAD_CONTAINER_NAME: str = "azure storage video uploads connectainer name"
     VIDEO_ID: str = "video id"
     VIDEO_NAME: str = "video name"
     GROQ_API_KEY: str = "groq cloud api key"

@@ -9,6 +9,7 @@ export type Bindings = {
   CLIENT_URL: string;
   ABS_CONNECTION_URL: string;
   ABS_CONTAINER_NAME: string;
+  ABS_UPLOAD_CONTAINER_NAME: string;
   WEBHOOK_SECRET: string;
   UPSTASH_REDIS_REST_URL: string;
   UPSTASH_REDIS_REST_TOKEN: string;

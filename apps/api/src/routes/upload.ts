@@ -93,7 +93,7 @@ uploadRouter.post(
 
       const blobSasUrl = await generateBlobSasUrl(
         c.env.ABS_CONNECTION_URL,
-        c.env.ABS_CONTAINER_NAME,
+        c.env.ABS_UPLOAD_CONTAINER_NAME,
         `${video.id}/${name}`,
         2,
       );
