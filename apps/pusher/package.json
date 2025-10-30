@@ -3,6 +3,11 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun run --env-file ../../.env --hot ./src/index.ts",
+    "build": "bun build ./src/index.ts --outdir dist --target bun",
+    "start": "bun run ./dist/index.js"
+  },
   "dependencies": {
     "@quillstream/redis": "workspace:*",
     "@quillstream/store": "workspace:*"

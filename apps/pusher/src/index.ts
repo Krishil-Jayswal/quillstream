@@ -44,10 +44,9 @@ const startPusher = async () => {
       const logsResults = await fetchlogsPipeline.exec();
 
       jobIds.forEach((jobId, index) => {
-        (logsResults[index] as string[]).forEach((log) => {
-          const parsed = JSON.parse(log);
+        (logsResults[index] as Omit<Log, "videoId">[]).forEach((log) => {
           logsData.push({
-            ...parsed,
+            ...log,
             videoId: jobId,
           });
         });

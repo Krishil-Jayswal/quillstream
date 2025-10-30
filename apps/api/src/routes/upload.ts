@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/auth";
 import { zValidator } from "@hono/zod-validator";
 import { generateBlobSasUrl } from "../utils/blob";
 import { xAdd } from "@quillstream/redis/edge";
-import { PreSignedUrlSchema } from "../utils/validation";
+import { PreSignedUrl, PreSignedUrlSchema } from "../utils/validation";
 
 const uploadRouter = new Hono<AppContext>();
 
@@ -73,7 +73,7 @@ uploadRouter.post(
   zValidator("json", PreSignedUrlSchema),
   async (c) => {
     try {
-      const { filename } = c.req.valid("json");
+      const { filename } = c.req.valid("json") as PreSignedUrl;
       const parts = filename.split(".").map((part) => part.trim());
       const extension = parts.pop() || "mp4";
       const title = parts.join(".").trim();

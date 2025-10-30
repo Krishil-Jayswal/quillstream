@@ -14,7 +14,6 @@
     "@radix-ui/react-slot": "latest",
     "@react-three/drei": "latest",
     "@react-three/fiber": "latest",
-    "@types/three": "^0.180.0",
     "@vercel/analytics": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -30,8 +29,10 @@
   },
   "devDependencies": {
     "@quillstream/eslint-config": "workspace:*",
+    "@quillstream/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
+    "@types/three": "^0.180.0",
     "@types/react": "^19.1.1",
     "@types/react-dom": "^19",
     "postcss": "^8.5",

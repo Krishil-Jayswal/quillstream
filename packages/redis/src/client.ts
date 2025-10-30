@@ -33,7 +33,7 @@ export class RedisClient<T extends Stream> {
         count,
       },
     )) as Res;
-    if (!res || !res[0]) return undefined;
+    if (!res || res.length === 0 || !res[0]) return undefined;
 
     switch (this.stream) {
       case VIDEOS_STREAM: {

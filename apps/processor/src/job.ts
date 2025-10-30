@@ -5,10 +5,13 @@ import {
 } from "@kubernetes/client-node";
 
 const kubectl = new KubeConfig();
+let workerImage: string;
 if (process.env.APP_ENV === "production") {
   kubectl.loadFromCluster();
+  workerImage = "jkrishil/quillstream-worker:latest";
 } else {
   kubectl.loadFromDefault();
+  workerImage = "worker:latest";
 }
 
 const apiClient = kubectl.makeApiClient(BatchV1Api);
@@ -67,7 +70,7 @@ export const processVideo = async (id: string, name: string) => {
             containers: [
               {
                 name: "quillstream-worker",
-                image: "jkrishil/quillstream-worker:latest",
+                image: workerImage,
                 imagePullPolicy: "IfNotPresent",
                 env: [
                   { name: "VIDEO_ID", value: id },

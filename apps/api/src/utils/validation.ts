@@ -13,3 +13,5 @@ export const PreSignedUrlSchema = z.object({
       );
     }),
 });
+
+export type PreSignedUrl = z.infer<typeof PreSignedUrlSchema>;

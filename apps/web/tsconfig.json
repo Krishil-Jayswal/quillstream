@@ -1,4 +1,5 @@
 {
+  "extends": "@quillstream/typescript-config/nextjs.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
