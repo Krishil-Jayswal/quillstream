@@ -3,8 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "lint": "eslint .",
+    "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
     "@hono/oauth-providers": "^0.8.5",
@@ -15,7 +15,8 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "wrangler": "^4.4.0",
-    "@quillstream/eslint-config": "workspace:*"
+    "@quillstream/eslint-config": "workspace:*",
+    "eslint": "^9.34.0",
+    "wrangler": "^4.4.0"
   }
 }

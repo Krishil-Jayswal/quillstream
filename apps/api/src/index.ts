@@ -4,6 +4,7 @@ import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import uploadRouter from "./routes/upload";
 import { Bindings } from "./types/generics";
+import notesRouter from "./routes/notes";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -24,6 +25,7 @@ app.get("/", (c) => {
 api.route("/auth", authRouter);
 api.route("/user", userRouter);
 api.route("/upload", uploadRouter);
+api.route("/notes", notesRouter);
 
 app.route("/api/v1", api);
 

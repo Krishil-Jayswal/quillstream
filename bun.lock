@@ -25,6 +25,7 @@
       },
       "devDependencies": {
         "@quillstream/eslint-config": "workspace:*",
+        "eslint": "^9.34.0",
         "wrangler": "^4.4.0",
       },
     },
@@ -38,6 +39,7 @@
         "@quillstream/eslint-config": "workspace:*",
         "@quillstream/typescript-config": "workspace:*",
         "@types/bun": "latest",
+        "eslint": "^9.34.0",
         "tsx": "^4.20.6",
       },
       "peerDependencies": {
@@ -54,6 +56,7 @@
         "@quillstream/eslint-config": "workspace:*",
         "@quillstream/typescript-config": "workspace:*",
         "@types/bun": "latest",
+        "eslint": "^9.34.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -89,6 +92,7 @@
         "@types/react": "^19.1.1",
         "@types/react-dom": "^19",
         "@types/three": "^0.180.0",
+        "eslint": "^9.34.0",
         "postcss": "^8.5",
         "tailwindcss": "^4.1.9",
         "tw-animate-css": "1.3.3",

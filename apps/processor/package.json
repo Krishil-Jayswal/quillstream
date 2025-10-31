@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "tsx --env-file ../../.env ./src/index.ts",
     "build": "bun build ./src/index.ts --outdir dist --target bun",
+    "dev": "tsx --env-file ../../.env ./src/index.ts",
+    "lint": "eslint .",
     "start": "bun run ./dist/index.js"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "@quillstream/eslint-config": "workspace:*",
     "@quillstream/typescript-config": "workspace:*",
     "@types/bun": "latest",
+    "eslint": "^9.34.0",
     "tsx": "^4.20.6"
   },
   "peerDependencies": {
